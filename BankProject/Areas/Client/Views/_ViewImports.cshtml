@@ -1,0 +1,15 @@
+﻿@using BankProject
+@using BankProject.Models
+@using BankProject.Areas.Identity
+@using BankProject.Areas.Client
+@using Microsoft.AspNetCore.Identity
+@using BankProject.Data
+@using BankProject.ViewModels
+
+
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers

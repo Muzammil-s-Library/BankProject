@@ -1,0 +1,204 @@
+﻿@model AccountDetailsViewModel
+
+<div class="abc">
+
+<h2 class="text-3xl font-bold text-orange-600 mb-4">Account Details</h2>
+
+<div class="container mx-auto p-6">
+    <div class="card bg-gradient-to-br from-orange-400 to-orange-600 text-white shadow-md rounded-lg p-5">
+        <h2 class="text-2xl font-semibold">Account Overview</h2>
+        <hr class="my-3 border-white opacity-50" />
+
+        <h4 class="text-lg font-semibold">Bank: @Model.Account.Bank.Name</h4>
+        <p class="text-lg"><strong>Account Number:</strong> @Model.Account.AccountNumber</p>
+        <p class="text-lg"><strong>Balance:</strong> $@Model.Account.Balance</p>
+
+        <hr class="my-3 border-white opacity-50" />
+        <h5 class="text-xl font-semibold">Banking Options</h5>
+
+        <div class="action-buttons mt-4 flex space-x-3">
+            <a asp-action="SendMoney" asp-route-id="@Model.Account.AccountId" class="btn">Send Money</a>
+                <a asp-action="Requestch" asp-route-id="@Model.Account.AccountId" class="btn">Request Chequebook</a>
+                <a asp-action="TransactionHistory" asp-route-id="@Model.Account.AccountId" class="btn">View Transaction History</a>
+        </div>
+    </div>
+</div>
+
+<!-- Sent Transaction History -->
+<div class="transaction-history container mx-auto p-6 mt-5">
+    <h2 class="text-2xl font-bold text-orange-600 mb-3">Sent Transactions</h2>
+    <div class="table-container">
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>To</th>
+                        <th>Description</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Request</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var transaction in Model.Transactions)
+                    {
+                        <tr>
+                            <td>@transaction.SentAt.ToString("yyyy-MM-dd")</td>
+                            <td>@transaction.ReciverName</td>
+                            <td>@transaction.Description</td>
+                            <td>@transaction.Amount.ToString("C")</td>
+                            <td class="status @transaction.Status.ToLower()"> @transaction.Status </td>
+                            <td>
+                                @if (transaction.Status == "Not Approved")
+                                {
+                                    <form asp-action="CancelTransaction" asp-controller="Account" method="post">
+                                        <input type="hidden" name="transactionId" value="@transaction.TransferId" />
+                                        <button type="submit" class="btn btnred">Cancel Transaction</button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+    </div>
+</div>
+
+<!-- Received Transaction History -->
+<div class="transaction-history container mx-auto p-6 mt-5 mb-5">
+    <h2 class="text-2xl font-bold text-orange-600 mb-3">Received Transactions</h2>
+    <div class="table-container">
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>From</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var transaction in Model.recTransactions)
+                {
+                    <tr>
+                        <td>@transaction.SentAt.ToString("yyyy-MM-dd")</td>
+                        <td>@transaction.Description</td>
+                        <td>@transaction.Amount.ToString("C")</td>
+                        <td>@transaction.senderName</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</div>
+<style>
+    .abc {
+        margin-top: 100px;
+    }
+
+    .custom-margin {
+        margin-bottom: -100px !important;
+    }
+
+    .site-navbar {
+        background-color: #343a40;
+        color: black;
+        margin-top: -100px;
+        border-bottom: 2px solid darkorange;
+    }
+
+    .card {
+        background: #ff7b3a;
+        color: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn {
+        flex: 1;
+        padding: 12px 20px;
+        background: #ff7b3a;
+        border-radius: 8px;
+        color: white;
+        font-size: 1em;
+        text-align: center;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        font-weight: bold;
+    }
+    .btnred{
+    background-color:red;
+    }
+
+        .btn:hover {
+            background: #e66a22;
+            transform: translateY(-2px);
+        }
+
+    .transaction-history {
+        background: white;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+        .transaction-history h2 {
+            font-size: 1.8em;
+            color: #ff7b3a;
+        }
+
+    .table-container {
+        overflow-x: auto;
+        border-radius: 10px;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .styled-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+    }
+
+        .styled-table th, .styled-table td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .styled-table th {
+            background: #ff7b3a;
+            color: white;
+            font-size: 1.1em;
+        }
+
+        .styled-table tr:hover {
+            background: #fff7f1;
+        }
+
+    .status {
+        font-weight: bold;
+        padding: 6px 10px;
+        border-radius: 6px;
+        text-align: center;
+    }
+
+        .status.success {
+            background: #28a745;
+            color: white;
+        }
+
+        .status.pending {
+            background: #ffc107;
+            color: black;
+        }
+
+        .status.failed {
+            background: #dc3545;
+            color: white;
+        }
+</style>

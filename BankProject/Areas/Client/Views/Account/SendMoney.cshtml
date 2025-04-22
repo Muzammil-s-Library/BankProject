@@ -1,0 +1,88 @@
+﻿@{
+    ViewData["Title"] = "SendMoney";
+}
+
+<div class="container abc">
+    <div class="form-container">
+        <h2>Send Money</h2>
+        <form action="/Client/Account/ConfirmMoney" method="post">
+            <div class="mb-3">
+                <label for="accountNumber" class="form-label">Account Number</label>
+                <input type="text" class="form-control" id="accountNumber" name="AccountNumber" required>
+                <input type="text" hidden class="form-control" value="@ViewBag.SenderId" id="accountNumber" name="SenderId" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="amount" class="form-label">Amount</label>
+                <input type="number" class="form-control" id="amount" name="Amount" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="bank" class="form-label">Bank</label>
+                <select class="form-control" id="bank" name="BankId" required>
+                    
+                        <option value="">--Select Bank--</option>
+                    @foreach (var bank in ViewBag.Banks)
+                    {
+                        <option value="@bank.Value">@bank.Text</option>
+                    }
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" id="description" name="Description" rows="3" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-submit">Proceed</button>
+        </form>
+    </div>
+</div>
+
+<style>
+    .abc {
+        margin-top: 100px;
+    }
+
+    .custom-margin {
+        margin-bottom: -100px !important;
+    }
+
+    .site-navbar {
+        background-color: #343a40;
+        color: black;
+        margin-top: -100px;
+        border-bottom: 2px solid darkorange;
+    }
+    .form-container {
+        max-width: 500px;
+        margin: 50px auto;
+        padding: 20px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-container h2 {
+        text-align: center;
+        color: #ff6600;
+        margin-bottom: 20px;
+    }
+
+    .btn-submit {
+        background-color: #ff6600;
+        border: none;
+        width: 100%;
+        font-size: 18px;
+        padding: 10px;
+        transition: 0.3s ease-in-out;
+    }
+
+    .btn-submit:hover {
+        background-color: #e65c00;
+    }
+
+    label {
+        font-weight: bold;
+    }
+</style>

@@ -1,0 +1,214 @@
+﻿@model ConfirmMoneyViewModel
+
+<div class="containe min-vh-100 abc">
+    <div class="card">
+        <h2 class="heading">Confirm Money Transfer</h2>
+
+        <div class="details">
+            <p class="label">Sender Name</p>
+            <p class="value">@Model.senderName</p>
+
+            <p class="label">Sender Account</p>
+            <p class="value">@Model.SenderAccountNumber</p>
+
+            <p class="label">Sender Bank</p>
+            <p class="value">@Model.SenderBankName</p>
+
+            <p class="label">Receiver Name</p>
+            <p class="value">@Model.ReciverName</p>
+
+            <p class="label">Receiver Account</p>
+            <p class="value">@Model.ReceiverAccountNumber</p>
+
+            <p class="label">Receiver Bank</p>
+            <p class="value">@Model.ReceiverBankName</p>
+
+            <p class="label">Amount</p>
+            <p class="value">@Model.Amount</p>
+
+            <p class="label">Description</p>
+            <p class="value">@Model.Description</p>
+        </div>
+
+        <button class="btn-send" onclick="showPasswordModal()">Send Money</button>
+    </div>
+</div>
+
+<!-- Transaction Password Modal -->
+<div id="transactionPasswordModal" class="modal">
+    <div class="modal-content">
+        <h3>Enter Transaction Password</h3>
+        <input type="password" id="transactionPassword" class="input-field" required />
+        <button class="btn-confirm" onclick="submitTransfer()">Confirm</button>
+        <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+    </div>
+</div>
+
+<!-- Hidden Form -->
+<form id="transferForm" action="/Client/Account/FinalizeMoneyTransfer" method="post">
+    <input type="hidden" name="SenderName" value="@Model.senderName" />
+    <input type="hidden" name="SenderAccountNumber" value="@Model.SenderAccountNumber" />
+    <input type="hidden" name="SenderBankName" value="@Model.SenderBankName" />
+    <input type="hidden" name="ReciverName" value="@Model.ReciverName" />
+    <input type="hidden" name="ReceiverAccountNumber" value="@Model.ReceiverAccountNumber" />
+    <input type="hidden" name="ReceiverBankName" value="@Model.ReceiverBankName" />
+    <input type="hidden" name="Amount" value="@Model.Amount" />
+    <input type="hidden" name="Description" value="@Model.Description" />
+    <input type="hidden" id="hiddenTransactionPassword" name="TransactionPassword" />
+</form>
+
+<!-- JavaScript for Modal -->
+<script>
+    function showPasswordModal() {
+        document.getElementById("transactionPasswordModal").style.display = "flex";
+    }
+
+    function closeModal() {
+        document.getElementById("transactionPasswordModal").style.display = "none";
+    }
+
+    function submitTransfer() {
+        var password = document.getElementById("transactionPassword").value;
+        if (!password) {
+            alert("Please enter your transaction password.");
+            return;
+        }
+        document.getElementById("hiddenTransactionPassword").value = password;
+        document.getElementById("transferForm").submit();
+    }
+</script>
+
+<!-- Modern Orange UI Styling (Left-Aligned) -->
+<style>
+    .abc {
+        margin-top: 100px;
+    }
+
+   
+
+    .site-navbar {
+        background-color: #343a40;
+        color: black;
+        margin-top:-100px !important;
+        border-bottom: 2px solid darkorange;
+    }
+
+    .containe {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+
+    .card {
+        background: rgba(255, 165, 0, 0.1);
+        backdrop-filter: blur(10px);
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(255, 165, 0, 0.3);
+        width: 600px;
+        text-align: left; /* Align content to the left */
+    }
+
+    .heading {
+        color: #d97706;
+        font-size: 22px;
+        margin-bottom: 20px;
+        text-align: left; /* Align heading to the left */
+    }
+
+    .details {
+        text-align: left; /* Align text inside the details section */
+    }
+
+    .label {
+        font-size: 14px;
+        font-weight: bold;
+        color: #d97706;
+        text-transform: uppercase;
+        margin-top: 12px;
+    }
+
+    .value {
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .btn-send {
+        background: #d97706;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background 0.3s;
+        text-align: left; /* Align button to the left */
+        display: block; /* Make it full width */
+    }
+
+        .btn-send:hover {
+            background: #b45309;
+        }
+
+    /* Modal Styling */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        width: 300px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .input-field {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    .btn-confirm {
+        background: #d97706;
+        color: white;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        margin-top: 10px;
+        cursor: pointer;
+        width: 100%;
+    }
+
+        .btn-confirm:hover {
+            background: #b45309;
+        }
+
+    .btn-cancel {
+        background: #ccc;
+        color: black;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        margin-top: 10px;
+        cursor: pointer;
+        width: 100%;
+    }
+
+        .btn-cancel:hover {
+            background: #bbb;
+        }
+</style>

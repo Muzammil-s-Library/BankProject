@@ -1,0 +1,79 @@
+﻿@model Account
+@{
+    ViewData["Title"] = "Create Account";
+}
+
+<div class="container mt-5 py-5 custom-margin">
+    <div class="d-flex justify-content-center align-items-center" style="min-height: 75vh;">
+        <div class="card shadow-lg rounded-3 p-5" style="max-width: 800px; width: 100%;">
+            <h3 class="text-center mb-4" style="color: darkorange;"><b>Create Account</b></h3>
+            <form method="post" asp-controller="Account" asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                <div class="row">
+                    <!-- Left Column -->
+                    <div class="col-md-6">
+                        <!-- Account Type -->
+                        <div class="mb-3">
+                            <label asp-for="AccountType" class="form-label"></label>
+                            <select asp-for="AccountType" class="form-select form-control" required>
+                                <option value="">Select account type</option>
+                                <option value="Savings">Savings</option>
+                                <option value="Current">Current</option>
+                            </select>
+                            <span asp-validation-for="AccountType" class="text-danger"></span>
+                        </div>
+
+                        <!-- Balance -->
+                        <div class="mb-3">
+                            <label asp-for="Balance" class="form-label"></label>
+                            <input asp-for="Balance" type="number" step="0.01" class="form-control" placeholder="Enter initial balance" required />
+                            <span asp-validation-for="Balance" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="col-md-6">
+                        <!-- Bank -->
+                        <div class="mb-3">
+                            <label for="Bank" class="form-label">Select Bank</label>
+                            <select id="Bank" asp-for="BankId"  class="form-select form-control" asp-items="ViewBag.Banks" required>
+                                <option value="">Select bank</option>
+                            </select>
+                        </div>
+
+                        <!-- Phone Number -->
+                        <div class="mb-3">
+                            <label asp-for="PhoneNumber" class="form-label"></label>
+                            <input asp-for="PhoneNumber" class="form-control" placeholder="Enter phone number" required />
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        </div>
+
+                        <!-- Transaction Password -->
+                    <!-- Transaction Password -->
+                    </div>
+
+                </div>
+                    <div class="mb-3">
+                        <label asp-for="TransactionPassword" class="form-label"></label>
+                        <input asp-for="TransactionPassword" type="password" class="form-control w-100" placeholder="Enter transaction password" required />
+                        <span asp-validation-for="TransactionPassword" class="text-danger"></span>
+                    </div>
+
+                <button type="submit" class="btn btn-primary w-100">Create Account</button>
+            </form>
+          
+        </div>
+    </div>
+</div>
+
+<style>
+    .custom-margin {
+        margin-top: 0px !important;
+    }
+
+    .site-navbar {
+        background-color: #343a40;
+        color: black;
+        border-bottom: 2px solid darkorange;
+    }
+</style>

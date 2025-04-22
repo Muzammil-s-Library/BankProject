@@ -1,0 +1,139 @@
+﻿@model ConfirmMoneyViewModel
+<div class="abc min-vh-100">
+
+<div id="transactionSlip" class="slip-container">
+    <h2 class="slip-heading">Transaction Receipt</h2>
+    <div class="slip-content">
+        <p><strong>Sender Name:</strong> <span id="slipSenderName"></span></p>
+        <p><strong>Sender Account:</strong> <span id="slipSenderAccount"></span></p>
+        <p><strong>Sender Bank:</strong> <span id="slipSenderBank"></span></p>
+        <hr>
+        <p><strong>Receiver Name:</strong> <span id="slipReceiverName"></span></p>
+        <p><strong>Receiver Account:</strong> <span id="slipReceiverAccount"></span></p>
+        <p><strong>Receiver Bank:</strong> <span id="slipReceiverBank"></span></p>
+        <hr>
+        <p><strong>Amount:</strong> <span id="slipAmount"></span></p>
+        <p><strong>Description:</strong> <span id="slipDescription"></span></p>
+        <p><strong>Date:</strong> <span id="slipDate"></span></p>
+    </div>
+    <button onclick="downloadPDF()" class="btn-download" title="Download PDF">
+        ⭳
+    </button>
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+    document.getElementById("slipSenderName").innerText = "@Model.senderName";
+    document.getElementById("slipSenderAccount").innerText = "@Model.SenderAccountNumber";
+    document.getElementById("slipSenderBank").innerText = "@Model.SenderBankName";
+    document.getElementById("slipReceiverName").innerText = "@Model.ReciverName";
+    document.getElementById("slipReceiverAccount").innerText = "@Model.ReceiverAccountNumber";
+    document.getElementById("slipReceiverBank").innerText = "@Model.ReceiverBankName";
+    document.getElementById("slipAmount").innerText = "@Model.Amount";
+    document.getElementById("slipDescription").innerText = "@Model.Description";
+    document.getElementById("slipDate").innerText = new Date().toLocaleDateString();
+
+    function downloadPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        doc.text("Transaction Receipt", 10, 10);
+        doc.text("Sender Name: " + "@Model.senderName", 10, 30);
+        doc.text("Sender Account: " + "@Model.SenderAccountNumber", 10, 40);
+        doc.text("Sender Bank: " + "@Model.SenderBankName", 10, 50);
+        doc.text("Receiver Name: " + "@Model.ReciverName", 10, 60);
+        doc.text("Receiver Account: " + "@Model.ReceiverAccountNumber", 10, 70);
+        doc.text("Receiver Bank: " + "@Model.ReceiverBankName", 10, 80);
+        doc.text("Amount: " + "@Model.Amount", 10, 90);
+        doc.text("Description: " + "@Model.Description", 10, 100);
+        doc.text("Date: " + new Date().toLocaleDateString(), 10, 110);
+        doc.save("Transaction_Receipt.pdf");
+    }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+    document.getElementById("slipSenderName").innerText = "@Model.senderName";
+    document.getElementById("slipSenderAccount").innerText = "@Model.SenderAccountNumber";
+    document.getElementById("slipSenderBank").innerText = "@Model.SenderBankName";
+    document.getElementById("slipReceiverName").innerText = "@Model.ReciverName";
+    document.getElementById("slipReceiverAccount").innerText = "@Model.ReceiverAccountNumber";
+    document.getElementById("slipReceiverBank").innerText = "@Model.ReceiverBankName";
+    document.getElementById("slipAmount").innerText = "@Model.Amount";
+    document.getElementById("slipDescription").innerText = "@Model.Description";
+    document.getElementById("slipDate").innerText = new Date().toLocaleDateString();
+
+    function downloadPDF() {
+        html2canvas(document.querySelector("#transactionSlip")).then(canvas => {
+            const imgData = canvas.toDataURL("image/png");
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF("p", "mm", "a4");
+            const imgWidth = 190;
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+            doc.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
+            doc.save("Transaction_Receipt.pdf");
+        });
+    }
+</script>
+<style>
+    .abc {
+        margin-top: 300px;
+    }
+
+    .custom-margin {
+        margin-bottom: -100px !important;
+    }
+
+    .site-navbar {
+        background-color: #343a40;
+        color: black;
+        margin-top: -300px;
+        border-bottom: 2px solid darkorange;
+    }
+    .slip-container {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        max-width: 600px;
+        margin: 20px auto;
+        text-align: left;
+        position: relative;
+        border: 2px solid #d97706;
+    }
+
+    .slip-heading {
+        color: #d97706;
+        text-align: center;
+        margin-bottom: 10px;
+        font-size: 30px;
+        font-weight: bold;
+    }
+
+    .slip-content p {
+        font-size: 14px;
+        margin: 5px 0;
+    }
+
+    .btn-download {
+        position: absolute;
+        bottom: 15px;
+        right: 15px;
+        background: #d97706;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+        .btn-download:hover {
+            background: #b45309;
+        }
+</style>

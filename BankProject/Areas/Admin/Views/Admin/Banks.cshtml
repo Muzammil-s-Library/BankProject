@@ -1,0 +1,52 @@
+﻿@model List<Bank>
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Banks</h1>
+
+    <!-- Add Bank Button -->
+    <a href="@Url.Action("CreateBank", "Admin")" class="btn btn-primary mb-3">Add New Bank</a>
+
+    <!-- Data Table -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Banks List</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Bank ID</th>
+                            <th>Bank Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var bank in Model)
+                        {
+                            <tr>
+                                <td>@bank.BankId</td>
+                                <td>@bank.Name</td>
+                                <td>
+                                    <!-- Update Button -->
+                                    <a href="@Url.Action("EditBank", "Admin", new { id = bank.BankId })" class="btn btn-warning btn-sm">Update</a>
+
+                                    <!-- Delete Button -->
+                                    <form asp-action="DeleteBank" asp-controller="Admin" method="post" onsubmit="return confirm('Are you sure you want to delete this bank?');" style="display:inline;">
+                                        <input type="hidden" name="id" value="@bank.BankId" />
+                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- /.container-fluid -->

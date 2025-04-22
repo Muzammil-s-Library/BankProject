@@ -1,0 +1,57 @@
+﻿@model List<Transfer>
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Cheque Book Requests</h1>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Transaction Requests</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped styled-table">
+
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Sender</th>
+                            <th>Receiver</th>
+                            <th>Description</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var transaction in Model)
+                        {
+                            <tr>
+                                <td>@transaction.SentAt.ToString("yyyy-MM-dd")</td>
+                                <td>@transaction.senderName (@transaction.SenderAccountNumber)</td>
+                                <td>@transaction.ReciverName (@transaction.ReceiverAccountNumber)</td>
+                                <td>@transaction.Description</td>
+                                <td>@transaction.Amount.ToString("C")</td>
+                                <td class="status @transaction.Status.ToLower()"> @transaction.Status </td>
+                                <td>
+                                    @if (transaction.Status == "Not Approved")
+                                    {
+                                        <form asp-action="ApproveTransaction" asp-controller="Admin" method="post">
+                                            <input type="hidden" name="transactionId" value="@transaction.TransferId" />
+                                            <button type="submit" class="btn btn-success">Approve</button>
+                                        </form>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- /.container-fluid -->

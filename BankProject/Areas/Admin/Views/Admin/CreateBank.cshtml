@@ -1,0 +1,14 @@
+﻿@model BankProject.Models.Bank
+
+<div class="d-flex justify-content-center  vh-25">
+<div class="card shadow-lg  p-4 rounded" style="width: 800px;">
+<h2>Add New Bank</h2>
+<form asp-action="CreateBank" method="post">
+    <div class="form-group">
+        <label for="Name">Bank Name</label>
+        <input asp-for="Name" class="form-control" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+<div/><div/>

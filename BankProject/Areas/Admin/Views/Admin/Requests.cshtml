@@ -1,0 +1,57 @@
+﻿@model IEnumerable<BankProject.Models.ChequeBookRequest> 
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Cheque Book Requests</h1>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Cheque Book Requests</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Account Number</th>
+                            <th>Status</th>
+                            <th>Requested On</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+               
+                    <tbody>
+                        @foreach (var request in Model)
+                        {
+                            <tr>
+                                <td>@request.Account.AccountNumber</td>
+                                <td>@request.Status</td>
+                                <td>@request.CreatedAt.ToString("yyyy-MM-dd")</td>
+                                <td>
+                                    @if (request.Status == "Pending")
+                                    {
+                                        <form method="post" asp-action="ApproveChequeBookRequest" asp-route-requestId="@request.RequestId" class="d-inline">
+                                            <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                                        </form>
+                                        <form method="post" asp-action="RejectChequeBookRequest" asp-route-requestId="@request.RequestId" class="d-inline">
+                                            <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-secondary">@request.Status</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- /.container-fluid -->

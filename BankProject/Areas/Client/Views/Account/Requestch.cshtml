@@ -1,0 +1,109 @@
+﻿@model Request
+@{
+    ViewData["Title"] = "SendMoney";
+}
+<div class="container abc">
+    <div class="form-container">
+        @if (ViewBag.Status != "NoRequest")
+        {
+            <div class="m-5">
+
+            <div class="alert text-center " style="font-size: 20px; font-weight: bold;">
+                @if (ViewBag.Status == "Pending")
+                {
+                    <span class="text-warning">🟡 Your cheque book request is pending.</span>
+                }
+                else if (ViewBag.Status == "Approved")
+                {
+                    <span class="text-success">✅ Your cheque book request has been approved and is on the way!</span>
+                }
+                else if (ViewBag.Status == "Rejected")
+                {
+                    <span class="text-danger">❌ Your cheque book request was rejected. Please submit a new request.</span>
+                    <br />
+                    <a href="/Client/Account/RequestCh?id=@Model.Id" class="btn btn-orange mt-3">Submit New Request</a>
+                }
+            </div>
+            </div>
+        }
+        else
+        {
+            <h2>Request ChequeBook</h2>
+
+            <form action="/Client/Account/RequestCh" method="post">
+                <input type="hidden" name="Id" value="@Model.Id" />
+
+                <div class="mb-3">
+                    <label class="form-label">Account Number</label>
+                    <input type="text" class="form-control" name="AccountNumber" value="@Model.AccountNumber" required placeholder="Enter your account number">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Number of Leaves</label>
+                    <select class="form-control" name="NumberOfLeaves" required>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Delivery Address</label>
+                    <input type="text" class="form-control" name="DeliveryAddress" placeholder="Enter delivery address">
+                </div>
+
+                <button type="submit" class="btn btn-orange w-100 btn-submit">Submit Request</button>
+            </form>
+        }
+    </div>
+</div>
+
+<style>
+    .abc {
+        margin-top: 100px;
+       
+    }
+
+    .custom-margin {
+        margin-bottom: -100px !important;
+    }
+
+    .site-navbar {
+        background-color: #343a40;
+        color: black;
+        margin-top: -100px;
+        border-bottom: 2px solid darkorange;
+    }
+
+    .form-container {
+        max-width: 500px;
+        margin: 50px auto;
+        padding: 20px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+        .form-container h2 {
+            text-align: center;
+            color: #ff6600;
+            margin-bottom: 20px;
+        }
+
+    .btn-submit {
+        background-color: #ff6600;
+        border: none;
+        width: 100%;
+        font-size: 18px;
+        padding: 10px;
+        transition: 0.3s ease-in-out;
+    }
+
+        .btn-submit:hover {
+            background-color: #e65c00;
+        }
+
+    label {
+        font-weight: bold;
+    }
+</style>

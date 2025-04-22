@@ -1,0 +1,117 @@
+﻿@model List<Account>
+
+@{
+    ViewData["Title"] = "My Bank Accounts";
+}
+
+<div class="container py-5 abc min-vh-100">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-success fw-bold">
+            <i class="fas fa-university"></i> My Bank Accounts
+        </h2>
+        <a asp-controller="Account" asp-action="Index" class="btn btn-lg btn-success shadow-sm">
+            <i class="fas fa-plus-circle"></i> Open New Account
+        </a>
+    </div>
+
+    <div class="row g-4">
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var account in Model)
+            {
+                string bankLogoUrl = account.Bank?.Name switch
+                {
+                    "Meezan" => "https://seekvectors.com/files/download/meezan-bank-logo-02.png",
+                    "UBL" => "https://seeklogo.com/images/U/ubl-united-bank-limited-pakistan-logo-6AE8F3CDEE-seeklogo.com.png",
+                    "HBL" => "https://th.bing.com/th/id/R.d8beaa3380833c4e1779a561a49f317e?rik=J9Bc9%2bYP60pazQ&pid=ImgRaw&r=0",
+                    _ => "/images/default-bank.png"
+                };
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="card border-0 shadow rounded-lg overflow-hidden">
+                        <div class="position-relative">
+                            <img src="@bankLogoUrl" class="w-100 bank-logo" alt="@account.Bank?.Name Logo">
+                            <div class="overlay"></div>
+                        </div>
+                        <div class="card-body text-center">
+                            <h5 class="text-success fw-bold">@account.Bank?.Name</h5>
+                            <p class="text-muted mb-1">Account No: <strong>@account.AccountNumber</strong></p>
+                            <p class="text-muted mb-1">Type: <strong>@account.AccountType</strong></p>
+                            <p class="text-muted">Balance: <strong>@account.Balance.ToString("C")</strong></p>
+                            <a asp-action="Accountdetails" asp-route-id="@account.AccountId" class="btn btn-outline-success w-100 mt-2">
+                                <i class="fas fa-info-circle"></i> View Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12 text-center text-muted">
+                <p>No accounts found.</p>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .abc{
+    margin-top:100px;
+    
+    }
+    .custom-margin {
+        margin-bottom: -100px !important;
+    }
+
+    .site-navbar {
+        background-color: #343a40;
+        color: black;
+        margin-top:-100px;
+        border-bottom: 2px solid darkorange;
+    }
+
+    .btn-success{
+    
+        background-color:darkorange !important;
+    
+    }
+    .btn-outline-success{
+        border-color:darkorange !important;
+        
+        color:darkorange !important;
+    }
+
+    .btn-outline-success:hover {
+            background-color: darkorange !important;
+            color:white !important;
+        }
+    .bank-logo {
+        height: 160px;
+        object-fit: contain;
+        background: #fff;
+        padding: 15px;
+    }
+
+    .card {
+        border-radius: 12px;
+        margin-top:10px;
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+    .text-success{
+    color:darkorange !important;
+    
+    }
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px darkorange;
+        }
+
+    .btn-success {
+        background: darkorange;
+        border: none;
+        padding: 12px 20px;
+        font-size: 1.1rem;
+        border-radius: 8px;
+    }
+</style>

@@ -1,0 +1,44 @@
+﻿@page
+@model RegisterConfirmationModel
+@{
+    ViewData["Title"] = "Enter OTP";
+}
+
+<div class="container mt-5 py-5 custom-margin">
+    <div class="d-flex justify-content-center align-items-center" style="min-height: 75vh;">
+        <div class="card shadow-lg rounded-3 p-5" style="max-width: 600px; width: 100%;">
+            <h3 class="text-center mb-4" style="color: darkorange;"><b>Enter OTP</b></h3>
+            <p class="text-center">Please check your email and enter the OTP (6-digit code) sent to you.</p>
+
+            <form method="post">
+                <input type="hidden" name="Email" value="@ViewData["Email"]"  />
+                <div class="mb-3">
+                    <label for="OTP" class="form-label">OTP Code</label>
+                    <input type="text" id="OTP" name="OTP" class="form-control" maxlength="6" placeholder="Enter your OTP" required />
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Submit</button>
+            </form>
+
+            <p class="text-center mt-3">
+                Didn't receive the code? <a href="#" class="text-decoration-none">Resend OTP</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+
+
+<style>
+    .custom-margin {
+        margin-top: 0px !important;
+    }
+
+    /* Ensure the navbar has a contrasting background color */
+    .site-navbar {
+        background-color: #343a40; /* Dark gray background */
+        color: black; /* Black text for navbar */
+        border-bottom: 2px solid darkorange; /* Highlighted border */
+    }
+
+</style>

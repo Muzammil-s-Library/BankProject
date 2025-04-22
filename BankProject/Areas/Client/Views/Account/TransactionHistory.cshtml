@@ -1,0 +1,159 @@
+﻿@model AccountDetailsViewModel
+
+<div class="abc min-vh-100 bg-gray-100 py-8">
+    <h2 class="text-4xl font-extrabold text-orange-600 my-5 text-center">Transaction History</h2>
+
+    <div class="container mx-auto p-5 bg-white shadow-lg rounded-lg">
+        <p class="text-lg font-medium"><strong>Bank:</strong> @Model.Account.Bank.Name</p>
+        <p class="text-lg font-medium"><strong>Account Number:</strong> @Model.Account.AccountNumber</p>
+        <p class="text-lg font-medium"><strong>Balance:</strong> $@Model.Account.Balance</p>
+    </div>
+
+    <!-- Download Buttons -->
+   
+
+    <!-- Transactions Table -->
+    <div class="transaction-history container mx-auto p-5 my-5 bg-white shadow-lg rounded-lg">
+        <h2 class="text-2xl font-bold text-orange-600 mb-4">All Transactions</h2>
+        <div class="flex justify-center space-x-4 ">
+            <button onclick="downloadCSV()" class="btn mb-3">Download CSV</button>
+            <button onclick="downloadPDF()" class="btn mb-3">Download PDF</button>
+        </div>
+        <div class="table-container overflow-x-auto">
+            <table id="transactionTable" class="styled-table w-full">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>To/From</th>
+                        <th>Description</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var transaction in Model.Transactions)
+                    {
+                        <tr>
+                            <td>@transaction.SentAt.ToString("yyyy-MM-dd")</td>
+                            <td class="font-bold text-red-600">Sent</td>
+                            <td>@transaction.ReciverName</td>
+                            <td>@transaction.Description</td>
+                            <td>@transaction.Amount.ToString("C")</td>
+                            <td class="status @transaction.Status.ToLower() font-semibold">@transaction.Status</td>
+                        </tr>
+                    }
+                    @foreach (var transaction in Model.recTransactions)
+                    {
+                        <tr>
+                            <td>@transaction.SentAt.ToString("yyyy-MM-dd")</td>
+                            <td class="font-bold text-green-600">Received</td>
+                            <td>@transaction.senderName</td>
+                            <td>@transaction.Description</td>
+                            <td>@transaction.Amount.ToString("C")</td>
+                            <td class="status success font-semibold">Approved</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+    function downloadCSV() {
+        let csvContent = "Date,Type,To/From,Description,Amount,Status\n";
+        document.querySelectorAll("#transactionTable tbody tr").forEach(row => {
+            let rowData = [];
+            row.querySelectorAll("td").forEach(cell => rowData.push(cell.innerText));
+            csvContent += rowData.join(",") + "\n";
+        });
+        let blob = new Blob([csvContent], { type: "text/csv" });
+        let link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "Transaction_Report.csv";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    function downloadPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        doc.text("Transaction History Report", 10, 10);
+        let yPosition = 30;
+        document.querySelectorAll("#transactionTable tbody tr").forEach(row => {
+            let rowData = [];
+            row.querySelectorAll("td").forEach(cell => rowData.push(cell.innerText));
+            doc.text(rowData.join(" | "), 10, yPosition);
+            yPosition += 10;
+        });
+        doc.save("Transaction_Report.pdf");
+    }
+</script>
+
+<style>
+    .abc {
+        margin-top: 100px;
+    }
+
+    .custom-margin {
+        margin-bottom: -100px !important;
+    }
+
+    .site-navbar {
+        background-color: #343a40;
+        color: black;
+        margin-top: -100px;
+        border-bottom: 2px solid darkorange;
+    }
+
+    .btn {
+        padding: 12px 24px;
+        background: #d97706;
+     
+        border-radius: 8px;
+        color: white;
+        font-size: 1em;
+        text-align: center;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        font-weight: bold;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+        .btn:hover {
+            background: #b45309;
+            transform: translateY(-2px);
+        }
+
+    .styled-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+        .styled-table th, .styled-table td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .styled-table th {
+            background: #d97706;
+            color: white;
+            font-size: 1.1em;
+        }
+
+        .styled-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        .styled-table tr:hover {
+            background: #fff7f1;
+        }
+</style>
